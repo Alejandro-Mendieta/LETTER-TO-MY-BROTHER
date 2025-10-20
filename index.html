@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FELIZ CUMPLEAÑOS HERMANITO 🌻🍁</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .title {
+      color: white;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .title h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .title p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .envelope {
+      width: 500px;
+      height: 500px;
+      position: relative;
+      cursor: pointer;
+      margin: 0 auto;
+      z-index: 10;
+      transition: transform 0.3s ease;
+    }
+
+    .envelope:hover {
+      transform: translateY(-5px);
+    }
+
+    .envelope-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s ease;
+    }
+
+    .envelope.open .envelope-inner {
+      transform: rotateY(180deg);
+    }
+
+    .envelope-front,
+    .envelope-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .envelope-front {
+      background: linear-gradient(135deg, #ffffff, hsl(216, 100%, 64%));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      z-index: 2;
+      border: 2px solid #041df8;
+    }
+
+    .envelope-back {
+      background: white;
+      transform: rotateY(180deg);
+      overflow: hidden;
+      z-index: 1;
+      border: 2px solid #041df8;
+    }
+
+    .postage-stamp {
+      align-self: flex-end;
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      border: 1px dashed #041df8;
+    }
+
+    .postage-stamp svg {
+      width: 40px;
+      height: 40px;
+      color: #041df8;
+    }
+
+    .address {
+      color: #041df8;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .address p {
+      margin-bottom: 5px;
+      font-size: 1.1rem;
+    }
+
+    .top-fold {
+      width: 100%;
+      height: 30px;
+      background: #041df8;
+      position: absolute;
+      top: 0;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .letter {
+      padding: 40px 20px 20px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .custom-image {
+      width: 140px;
+      height: 140px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-bottom: 10px;
+      border: 3px solid #000000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .custom-image2 {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #000000;
+      transition: transform 0.3s ease;
+    }
+
+    .custom-image2:hover {
+      transform: scale(1.1);
+    }
+
+    .letter p {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .letter strong {
+      color: #041df8;
+      font-size: 1.1rem;
+    }
+
+    .letter-button {
+      background: linear-gradient(135deg, #041df8, #ffffff);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s;
+      z-index: 10;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(96, 182, 252, 0.445);
+      font-weight: bold;
+    }
+
+    .letter-button:hover {
+      background: linear-gradient(135deg, #041df8, #ffffff);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(96, 182, 252, 0.445);
+    }
+
+    .appearing-video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 90vw;
+      max-width: 800px;
+      height: auto;
+      max-height: 80vh;
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      border: 5px solid white;
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.8s ease;
+      object-fit: cover;
+    }
+
+    .appearing-video.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 90;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .instructions {
+      color: white;
+      margin-top: 20px;
+      font-size: 16px;
+      opacity: 0.9;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23041df8"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+      background-size: contain;
+      opacity: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #041df8;
+      opacity: 0;
+      z-index: 1000;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 101;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 600px) {
+      .envelope {
+        width: 350px;
+        height: 350px;
+      }
+      
+      .title h1 {
+        font-size: 1.8rem;
+      }
+      
+      .appearing-video {
+        width: 95vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="title">
+      <h1>FELIZ CUMPLEAÑOS MI NICO</h1>
+    </div>
+
+    <div class="envelope">
+      <div class="envelope-inner">
+        <!-- Frente de la carta -->
+        <div class="envelope-front">
+          <div class="postage-stamp">
+            <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+          </div>
+          
+          <div class="address">
+            <p>
+              <strong style="font-size: 20px; color: #041df8;">PARA:</strong> 
+              <span style="font-size: 18px; color: #ffffff;">MI NICO</span>
+            </p>
+            <p>
+              <strong style="font-size: 20px; color: #041df8;">DE:</strong> 
+              <span style="font-size: 18px; color: #ffffff;">ALEJANDRO MENDIETA</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Reverso con la carta -->
+        <div class="envelope-back">
+          <div class="top-fold"></div>
+          <div class="letter">
+          <p>
+              <strong style="font-size: 20px; color: #041df8;">PARA: MI NICO </strong><br>
+              <span style="font-size: 18px; color: black; font-weight: bold;">
+                ¡TE QUIERO MUCHO!
+              </span>
+            </p>
+            <img src="/assets/FOTO/Ftosecond.png" alt="Foto de Nico" class="custom-image">
+            <p style="font-style: italic; margin-top: 10px; color: #000000;">
+              "LOS HERMANOS SON COMO LAS ESTRELLAS, PUEDES NO VERLOS SIEMPRE, PERO SABES QUE SIEMPRE ESTÁN AHI"
+            </p>
+
+            <a href="index1.html" target="_blank"> 
+              <img src="/assets/FOTO/Ftonico.png" alt="Foto de Nico" class="custom-image2">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón para reproducir video sorpresa -->
+    <button id="showVideo" class="letter-button">
+      PRESIONA AQUÍ 
+    </button>
+    
+    <!-- Botón para música -->
+    <button id="toggleMusic" class="letter-button" style="margin-left: 10px;">
+      🎵 MÚSICA
+    </button>
+  </div>
+
+  <!-- Video que aparece al abrir la carta -->
+  <div class="video-container">
+    <button class="close-btn" id="closeVideo">×</button>
+    <video class="appearing-video" id="appearingVideo" controls>
+      <source src="https://assets.codepen.io/3364143/720.mp4" type="video/mp4">
+      Tu navegador no soporta el elemento de video.
+    </video>
+  </div>
+  
+  <!-- Overlay para cuando aparece el video -->
+  <div class="overlay" id="overlay"></div>
+  
+  <!-- Área para corazones flotantes -->
+  <div class="hearts" id="hearts"></div>
+
+  <!-- Audio -->
+  <audio id="bg-music" loop>
+    <source src="/assets/MUSICA/Como-Los-Quiero.wav" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <script>
+    const envelope = document.querySelector(".envelope");
+    const music = document.getElementById("bg-music");
+    const appearingVideo = document.getElementById("appearingVideo");
+    const overlay = document.getElementById("overlay");
+    const showVideoBtn = document.getElementById("showVideo");
+    const closeVideoBtn = document.getElementById("closeVideo");
+    const toggleMusicBtn = document.getElementById("toggleMusic");
+    const heartsContainer = document.getElementById("hearts");
+    let musicPlaying = false;
+
+    // Abrir/cerrar carta
+    envelope.addEventListener("click", () => {
+      envelope.classList.toggle("open");
+      createHearts(5);
+    });
+
+    // Mostrar video
+    showVideoBtn.addEventListener("click", () => {
+      appearingVideo.classList.add("show");
+      overlay.classList.add("show");
+      
+      // Reproducir el video automáticamente
+      appearingVideo.play().catch(err => {
+        console.log("El navegador bloqueó la reproducción automática del video:", err);
+      });
+      
+      createConfetti(50);
+    });
+
+    // Cerrar video
+    closeVideoBtn.addEventListener("click", closeVideo);
+    overlay.addEventListener("click", closeVideo);
+
+    function closeVideo() {
+      appearingVideo.classList.remove("show");
+      overlay.classList.remove("show");
+      appearingVideo.pause();
+    }
+
+    // Controlar música
+    toggleMusicBtn.addEventListener("click", () => {
+      if (musicPlaying) {
+        music.pause();
+        toggleMusicBtn.textContent = "🎵 MÚSICA";
+      } else {
+        music.play().catch(err => {
+          console.log("El navegador bloqueó la reproducción automática:", err);
+        });
+        toggleMusicBtn.textContent = "🔇 SILENCIAR";
+      }
+      musicPlaying = !musicPlaying;
+    });
+
+    // Crear corazones flotantes
+    function createHearts(count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        
+        // Posición aleatoria
+        const left = Math.random() * 100;
+        const size = Math.random() * 20 + 10;
+        
+        heart.style.left = `${left}%`;
+        heart.style.width = `${size}px`;
+        heart.style.height = `${size}px`;
+        heart.style.animation = `float ${Math.random() * 3 + 5}s linear forwards`;
+        
+        heartsContainer.appendChild(heart);
+        
+        // Eliminar el corazón después de la animación
+        setTimeout(() => {
+          heart.remove();
+        }, 8000);
+      }
+    }
+
+    // Crear confeti
+    function createConfetti(count) {
+      const colors = ['#041df8', '#3b7bf3', '#ffeb3b', '#4caf50', '#2196f3', '#9c27b0'];
+      
+      for (let i = 0; i < count; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        
+        // Posición aleatoria
+        const left = Math.random() * 100;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        confetti.style.left = `${left}%`;
+        confetti.style.backgroundColor = color;
+        confetti.style.opacity = '1';
+        
+        // Animación
+        confetti.style.animation = `float ${Math.random() * 2 + 3}s linear forwards`;
+        
+        document.body.appendChild(confetti);
+        
+        // Eliminar el confeti después de la animación
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+    }
+
+    // Crear algunos corazones al cargar la página
+    window.addEventListener('load', () => {
+      createHearts(3);
+    });
+  </script>
+</body>
+</html>

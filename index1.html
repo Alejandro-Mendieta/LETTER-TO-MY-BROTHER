@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FELIZ CUMPLEAÑOS NICO 🌻🍁</title>
+    <style>
+        /* Reset y variables globales */
+        *,
+        *::after,
+        *::before {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark-color: #000;
+            --fl-speed: 0.8s;
+            --speed-leaf: 2s;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--dark-color);
+            overflow: hidden;
+            perspective: 1000px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Contenedor principal con diseño dividido */
+        .container {
+            display: flex;
+            width: 110%;
+            height: 100vh;
+        }
+
+        /* Panel izquierdo para el texto */
+        .text-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5%;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Panel derecho para las flores */
+        .flowers-panel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Fondo estrellado */
+        .night {
+            position: fixed;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            filter: blur(0.1vmin);
+            background-image: radial-gradient(
+                    ellipse at top,
+                    transparent 0%,
+                    var(--dark-color)
+                ),
+                radial-gradient(
+                    ellipse at bottom,
+                    var(--dark-color),
+                    rgba(145, 233, 255, 0.2)
+                ),
+                repeating-linear-gradient(
+                    220deg,
+                    rgb(0, 0, 0) 0px,
+                    rgb(0, 0, 0) 19px,
+                    transparent 19px,
+                    transparent 22px
+                ),
+                repeating-linear-gradient(
+                    189deg,
+                    rgb(0, 0, 0) 0px,
+                    rgb(0, 0, 0) 19px,
+                    transparent 19px,
+                    transparent 22px
+                ),
+                repeating-linear-gradient(
+                    148deg,
+                    rgb(0, 0, 0) 0px,
+                    rgb(0, 0, 0) 19px,
+                    transparent 19px,
+                    transparent 22px
+                ),
+                linear-gradient(90deg, rgb(0, 255, 250), rgb(240, 240, 240));
+        }
+
+        /* Estrellas fugaces */
+        .shooting-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            animation: shootingStar 3s linear infinite;
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+            animation: shootingStarTail 3s linear infinite;
+        }
+
+        .shooting-star:nth-child(1) {
+            top: 5%;
+            left: -10%;
+            animation-delay: 0s;
+            animation-duration: 2.5s;
+        }
+
+        .shooting-star:nth-child(2) {
+            top: 15%;
+            left: -10%;
+            animation-delay: 2s;
+            animation-duration: 3s;
+        }
+
+        .shooting-star:nth-child(3) {
+            top: 25%;
+            left: -10%;
+            animation-delay: 4s;
+            animation-duration: 2.8s;
+        }
+
+        .shooting-star:nth-child(4) {
+            top: 0%;
+            left: -10%;
+            animation-delay: 6s;
+            animation-duration: 3.2s;
+        }
+
+        .shooting-star:nth-child(5) {
+            top: 35%;
+            left: -10%;
+            animation-delay: 8s;
+            animation-duration: 2.7s;
+        }
+
+        .shooting-star:nth-child(6) {
+            top: 8%;
+            left: -10%;
+            animation-delay: 10s;
+            animation-duration: 3.1s;
+        }
+
+        .shooting-star:nth-child(7) {
+            top: 45%;
+            left: -10%;
+            animation-delay: 12s;
+            animation-duration: 2.9s;
+        }
+
+        .shooting-star:nth-child(8) {
+            top: 3%;
+            left: -10%;
+            animation-delay: 14s;
+            animation-duration: 3.3s;
+        }
+
+        @keyframes shootingStar {
+            0% {
+                opacity: 0;
+                transform: translateX(0) translateY(0) rotate(45deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(120vw) translateY(50vh) rotate(10deg);
+            }
+        }
+
+        @keyframes shootingStarTail {
+            0% {
+                width: 0;
+            }
+            30% {
+                width: 100px;
+            }
+            100% {
+                width: 0;
+            }
+        }
+
+        /* Contenedor de flores */
+        .flowers {
+            position: relative;
+            transform: scale(0.6);
+            z-index: 2;
+            height: 100%;
+            width: 100%;
+        }
+
+        .flower {
+            position: absolute;
+            bottom: 10vmin;
+            transform-origin: bottom center;
+            z-index: 50;
+        }
+
+        /* Posicionamiento de flores en el lado derecho */
+        .flower--1 {
+            right: 10%;
+            animation: moving-flower-1 4s linear infinite;
+        }
+
+        .flower--1 .flower__line {
+            height: 70vmin;
+            animation-delay: 0.3s;
+        }
+
+        .flower--2 {
+            right: 30%;
+            transform: rotate(20deg);
+            animation: moving-flower-2 4s linear infinite;
+        }
+
+        .flower--2 .flower__line {
+            height: 60vmin;
+            animation-delay: 0.6s;
+        }
+
+        .flower--3 {
+            right: 50%;
+            transform: rotate(-15deg);
+            animation: moving-flower-3 4s linear infinite;
+        }
+
+        .flower--3 .flower__line {
+            animation-delay: 0.9s;
+        }
+
+        .flower--4 {
+            right: 70%;
+            z-index: -6;
+            transform: rotate(10deg);
+            animation: moving-flower-4 3.5s linear infinite;
+        }
+
+        .flower--4 .flower__line {
+            height: 90vmin;
+            animation-delay: 1.2s;
+        }
+
+        .flower--5 {
+            right: 5%;
+            z-index: -7;
+            transform: rotate(-25deg);
+            animation: moving-flower-5 4.5s linear infinite;
+        }
+
+        .flower--5 .flower__line {
+            height: 85vmin;
+            animation-delay: 1.9s;
+        }
+
+        /* Pétalos de girasol con colores naranja-rojo */
+        .flower__leafs {
+            position: relative;
+            animation: blooming-flower 2s backwards;
+        }
+
+        .flower__leafs--1 {
+            animation-delay: 1.1s;
+        }
+
+        .flower__leafs--2 {
+            animation-delay: 1.4s;
+        }
+
+        .flower__leafs--3 {
+            animation-delay: 1.7s;
+        }
+
+        .flower__leafs--4 {
+            animation-delay: 2.0s;
+        }
+
+        .flower__leafs--5 {
+            animation-delay: 2.0s;
+        }
+
+        .flower__leafs::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translate(-50%, -100%);
+            width: 8vmin;
+            height: 8vmin;
+            background-color: #ff7b00;
+            filter: blur(10vmin);
+        }
+
+        .flower__leaf {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 23vmin;
+            height: 6vmin;
+            border-radius: 60% 40% 60% 40%;
+            background-color: #ff4500;
+            background-image: linear-gradient(to top, #ff4500, #ff7b00, #ffa500);
+            transform-origin: bottom center;
+            opacity: 0.95;
+            box-shadow: inset 0 0 1vmin rgba(255, 255, 255, 0.7), 
+                        0 0 3vmin rgba(255, 69, 0, 0.4);
+            z-index: 2;
+            animation: color-change 4s infinite alternate;
+        }
+
+        .flower__leaf--1 {
+            transform: translate(-50%, -10%) rotate(-45deg);
+        }
+
+        .flower__leaf--2 {
+            transform: translate(-50%, -10%) rotate(-15deg);
+        }
+
+        .flower__leaf--3 {
+            transform: translate(-50%, -10%) rotate(15deg);
+        }
+
+        .flower__leaf--4 {
+            transform: translate(-50%, -10%) rotate(45deg);
+        }
+
+        /* Centro del girasol */
+        .flower__white-circle {
+            position: absolute;
+            left: -4vmin;
+            top: -4vmin;
+            width: 10vmin;
+            height: 10vmin;
+            border-radius: 50%;
+            background-color: #8b4513;
+            background-image: radial-gradient(circle at 30% 30%, #654321, #8b4513, #2f1b14);
+            box-shadow: inset 0 0 2vmin rgba(0, 0, 0, 0.8),
+                        0 0 1vmin rgba(139, 69, 19, 0.6);
+        }
+
+        .flower__white-circle::after {
+            content: "";
+            position: absolute;
+            left: 46%;
+            top: 31%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            z-index: 3;
+            border-radius: inherit;
+            background-image: repeating-conic-gradient(
+                from 0deg,
+                #2f1b14 0deg 15deg,
+                #654321 15deg 30deg
+            ),
+            radial-gradient(circle at center, #8b4513, #654321);
+        }
+
+        /* Tallos y hojas */
+        .flower__line {
+            height: 55vmin;
+            width: 2vmin;
+            background-image: linear-gradient(
+                to left,
+                rgb(0, 0, 0, 0.3),
+                transparent,
+                rgba(255, 255, 255, 0.2)
+            ),
+            linear-gradient(to top, transparent 10%, #2d5016, #4a7c23, #6b8e23);
+            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.7);
+            animation: grow-flower-tree 4s backwards;
+        }
+
+        .flower__line__leaf {
+            --w: 8vmin;
+            --h: calc(var(--w) + 3vmin);
+            position: absolute;
+            top: 20%;
+            left: 90%;
+            width: var(--w);
+            height: var(--h);
+            border-top-right-radius: var(--h);
+            border-bottom-left-radius: var(--h);
+            background-image: linear-gradient(
+                to top,
+                rgba(45, 80, 22, 0.6),
+                #4a7c23,
+                #6b8e23
+            );
+            box-shadow: inset 0 0 1vmin rgba(0, 0, 0, 0.3);
+        }
+
+        .flower__line__leaf--1 {
+            transform: rotate(70deg) rotateY(30deg);
+        }
+
+        .flower__line__leaf--2 {
+            top: 45%;
+            transform: rotate(70deg) rotateY(30deg);
+        }
+
+        .flower__line__leaf--3,
+        .flower__line__leaf--4 {
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-left-radius: var(--h);
+            border-bottom-right-radius: var(--h);
+            left: -460%;
+            top: 12%;
+            transform: rotate(-70deg) rotateY(30deg);
+        }
+
+        .flower__line__leaf--4 {
+            top: 40%;
+        }
+
+        /* Efectos de luz */
+        .flower__light {
+            position: absolute;
+            bottom: 0vmin;
+            width: 0.8vmin;
+            height: 0.8vmin;
+            background-color: #8b4513;
+            border-radius: 50%;
+            filter: blur(0.1vmin);
+            animation: sunflower-seeds 6s linear infinite backwards;
+            box-shadow: 0 0 1vmin rgba(139, 69, 19, 0.8);
+        }
+
+        .flower__light:nth-child(odd) {
+            background-color: #654321;
+        }
+
+        .flower__light--1 { left: -2vmin; animation-delay: 1s; }
+        .flower__light--2 { left: 3vmin; animation-delay: 0.5s; }
+        .flower__light--3 { left: -6vmin; animation-delay: 0.3s; }
+        .flower__light--4 { left: 6vmin; animation-delay: 0.9s; }
+        .flower__light--5 { left: -1vmin; animation-delay: 1.5s; }
+        .flower__light--6 { left: -4vmin; animation-delay: 3s; }
+        .flower__light--7 { left: 3vmin; animation-delay: 2s; }
+        .flower__light--8 { left: -6vmin; animation-delay: 3.5s; }
+
+        /* Texto especial */
+        .special-text {
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-size: 2.5vmin;
+            text-shadow: 0 0 1vmin rgba(255, 255, 255, 0.5);
+            z-index: 10;
+            opacity: 0;
+            animation: fadeIn 3s 1s forwards;
+            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4vmin;
+            border-radius: 2vmin;
+            box-shadow: 0 0 2vmin rgba(255, 100, 0, 0.5);
+            max-width: 90%;
+        }
+
+        .special-text strong {
+            display: block;
+            margin-bottom: 2vmin;
+            font-size: 3.5vmin;
+            color: #ffa500;
+            text-align: center;
+        }
+
+        /* Botón de música mejorado */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 100, 0, 0.9);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(255, 100, 0, 0.7);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .music-btn:hover {
+            background: rgba(255, 69, 0, 1);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 100, 0, 0.9);
+        }
+
+        .music-btn.playing {
+            background: rgba(76, 175, 80, 0.9);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.7);
+        }
+
+        .music-btn.playing:hover {
+            background: rgba(56, 142, 60, 1);
+        }
+
+        /* Indicador de música */
+        .music-indicator {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 99;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .music-indicator.show {
+            opacity: 1;
+        }
+
+        /* Animaciones clave */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes color-change {
+            0% {
+                background-color: #ff4500;
+                background-image: linear-gradient(to top, #ff4500, #ff7b00, #ffa500);
+                box-shadow: inset 0 0 1vmin rgba(255, 255, 255, 0.7), 
+                            0 0 3vmin rgba(255, 69, 0, 0.4);
+            }
+            100% {
+                background-color: #ff7b00;
+                background-image: linear-gradient(to top, #ff7b00, #ff4500, #ff0000);
+                box-shadow: inset 0 0 1vmin rgba(255, 255, 255, 0.7), 
+                            0 0 3vmin rgba(255, 0, 0, 0.4);
+            }
+        }
+
+        .grow-ans {
+            animation: grow-ans 2s var(--d) backwards;
+        }
+
+        .growing-grass {
+            animation: growing-grass-ans 1s 2s backwards;
+        }
+
+        .not-loaded * {
+            animation-play-state: paused !important;
+        }
+
+        /* Resto de keyframes */
+        @keyframes grow-ans {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes growing-grass-ans {
+            0% {
+                transform: scale(0);
+            }
+        }
+
+        @keyframes sunflower-seeds {
+            0% {
+                opacity: 0;
+                transform: translateY(0vmin) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(-3vmin) translateX(-1vmin) rotate(45deg);
+            }
+            40% {
+                opacity: 1;
+                transform: translateY(-8vmin) translateX(1vmin) rotate(90deg);
+            }
+            60% {
+                transform: translateY(-12vmin) translateX(-1vmin) rotate(135deg);
+            }
+            80% {
+                transform: translateY(-16vmin) translateX(2vmin) rotate(180deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-25vmin) rotate(225deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes moving-flower-1 {
+            0%, 100% { transform: rotate(2deg); }
+            50% { transform: rotate(-2deg); }
+        }
+
+        @keyframes moving-flower-2 {
+            0%, 100% { transform: rotate(18deg); }
+            50% { transform: rotate(14deg); }
+        }
+
+        @keyframes moving-flower-3 {
+            0%, 100% { transform: rotate(-18deg); }
+            50% { transform: rotate(-20deg) rotateY(-10deg); }
+        }
+
+        @keyframes moving-flower-4 {
+            0%, 100% { transform: rotate(9deg); }
+            50% { transform: rotate(12deg) rotateY(9deg); }
+        }
+
+        @keyframes moving-flower-5 {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(-11deg) rotateY(5deg); }
+        }
+
+        @keyframes blooming-leaf-right {
+            0% {
+                transform-origin: left;
+                transform: rotate(70deg) rotateY(30deg) scale(0);
+            }
+        }
+
+        @keyframes blooming-leaf-left {
+            0% {
+                transform-origin: right;
+                transform: rotate(-70deg) rotateY(30deg) scale(0);
+            }
+        }
+
+        @keyframes grow-flower-tree {
+            0% {
+                height: 0;
+                border-radius: 1vmin;
+            }
+        }
+
+        @keyframes blooming-flower {
+            0% {
+                transform: scale(0);
+            }
+        }
+
+        /* Media query para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .text-panel {
+                padding: 10% 5%;
+            }
+            
+            .special-text {
+                font-size: 3vmin;
+            }
+            
+            .special-text strong {
+                font-size: 4vmin;
+            }
+            
+            .flowers {
+                transform: scale(0.5);
+            }
+        }
+    </style>
+</head>
+
+<body class="not-loaded">
+    <div class="night"></div>
+    
+    <div class="container">
+        <!-- Panel izquierdo para el texto -->
+        <div class="text-panel">
+            <div class="special-text">
+                <strong>FELIZ CUMPLEAÑOS, HERMANITO</strong>
+                <p>ESPERO QUE HOY TENGAS UN DÍA MARAVILLOSO LLENO DE ALEGRÍAS Y MOMENTOS BONITOS.</p>
+                <p>ME SIENTO MUY ORGULLOSO DE TI Y DE TODO LO QUE HAS LOGRADO CON TU ESFUERZO Y DEDICACIÓN.</p>
+                <p>ERES UNA PERSONA INCREÍBLE Y UN EJEMPLO PARA TODOS LOS QUE TE QUEREMOS.</p>
+                <p>DESEO QUE ESTE NUEVO AÑO TE TRAIGA MUCHA PAZ, SALUD Y COSAS BUENAS.</p>
+                <p>TE QUIERO MUCHO, Y SIEMPRE PODRÁS CONTAR CONMIGO.</p>
+            </div>
+        </div>
+        
+        <!-- Panel derecho para las flores -->
+        <div class="flowers-panel">
+            <div class="flowers">
+                <!-- Flores (girasoles) -->
+                <div class="flower flower--1">
+                    <div class="flower__leafs flower__leafs--1">
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(0deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(30deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(60deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(90deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(120deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(150deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(180deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(210deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(240deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(270deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(300deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(330deg);"></div>
+                        <div class="flower__white-circle"></div>
+
+                        <div class="flower__light flower__light--1"></div>
+                        <div class="flower__light flower__light--2"></div>
+                        <div class="flower__light flower__light--3"></div>
+                        <div class="flower__light flower__light--4"></div>
+                        <div class="flower__light flower__light--5"></div>
+                        <div class="flower__light flower__light--6"></div>
+                        <div class="flower__light flower__light--7"></div>
+                        <div class="flower__light flower__light--8"></div>
+                    </div>
+                    <div class="flower__line">
+                        <div class="flower__line__leaf flower__line__leaf--1"></div>
+                        <div class="flower__line__leaf flower__line__leaf--2"></div>
+                        <div class="flower__line__leaf flower__line__leaf--3"></div>
+                        <div class="flower__line__leaf flower__line__leaf--4"></div>
+                    </div>
+                </div>
+
+                <!-- Otras flores (estructura simplificada) -->
+                <div class="flower flower--2">
+                    <div class="flower__leafs flower__leafs--2">
+                        <!-- Pétalos -->
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(0deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(30deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(60deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(90deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(120deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(150deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(180deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(210deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(240deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(270deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(300deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(330deg);"></div>
+                        <div class="flower__white-circle"></div>
+
+                        <!-- Efectos de luz -->
+                        <div class="flower__light flower__light--1"></div>
+                        <div class="flower__light flower__light--2"></div>
+                        <div class="flower__light flower__light--3"></div>
+                        <div class="flower__light flower__light--4"></div>
+                        <div class="flower__light flower__light--5"></div>
+                        <div class="flower__light flower__light--6"></div>
+                        <div class="flower__light flower__light--7"></div>
+                        <div class="flower__light flower__light--8"></div>
+                    </div>
+                    <div class="flower__line">
+                        <div class="flower__line__leaf flower__line__leaf--1"></div>
+                        <div class="flower__line__leaf flower__line__leaf--2"></div>
+                        <div class="flower__line__leaf flower__line__leaf--3"></div>
+                        <div class="flower__line__leaf flower__line__leaf--4"></div>
+                    </div>
+                </div>
+
+                <div class="flower flower--3">
+                    <div class="flower__leafs flower__leafs--3">
+                        <!-- Pétalos -->
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(0deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(30deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(60deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(90deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(120deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(150deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(180deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(210deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(240deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(270deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(300deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(330deg);"></div>
+                        <div class="flower__white-circle"></div>
+
+                        <!-- Efectos de luz -->
+                        <div class="flower__light flower__light--1"></div>
+                        <div class="flower__light flower__light--2"></div>
+                        <div class="flower__light flower__light--3"></div>
+                        <div class="flower__light flower__light--4"></div>
+                        <div class="flower__light flower__light--5"></div>
+                        <div class="flower__light flower__light--6"></div>
+                        <div class="flower__light flower__light--7"></div>
+                        <div class="flower__light flower__light--8"></div>
+                    </div>
+                    <div class="flower__line">
+                        <div class="flower__line__leaf flower__line__leaf--1"></div>
+                        <div class="flower__line__leaf flower__line__leaf--2"></div>
+                        <div class="flower__line__leaf flower__line__leaf--3"></div>
+                        <div class="flower__line__leaf flower__line__leaf--4"></div>
+                    </div>
+                </div>
+
+                <div class="flower flower--4">
+                    <div class="flower__leafs flower__leafs--4">
+                        <!-- Pétalos -->
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(0deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(30deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(60deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(90deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(120deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(150deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(180deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(210deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(240deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(270deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(300deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(330deg);"></div>
+                        <div class="flower__white-circle"></div>
+
+                        <!-- Efectos de luz -->
+                        <div class="flower__light flower__light--1"></div>
+                        <div class="flower__light flower__light--2"></div>
+                        <div class="flower__light flower__light--3"></div>
+                        <div class="flower__light flower__light--4"></div>
+                        <div class="flower__light flower__light--5"></div>
+                        <div class="flower__light flower__light--6"></div>
+                        <div class="flower__light flower__light--7"></div>
+                        <div class="flower__light flower__light--8"></div>
+                    </div>
+                    <div class="flower__line">
+                        <div class="flower__line__leaf flower__line__leaf--1"></div>
+                        <div class="flower__line__leaf flower__line__leaf--2"></div>
+                        <div class="flower__line__leaf flower__line__leaf--3"></div>
+                        <div class="flower__line__leaf flower__line__leaf--4"></div>
+                    </div>
+                </div>
+
+                <div class="flower flower--5">
+                    <div class="flower__leafs flower__leafs--5">
+                        <!-- Pétalos -->
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(0deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(30deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(60deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(90deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(120deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(150deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(180deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(210deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(240deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(270deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(300deg);"></div>
+                        <div class="flower__leaf" style="transform: translate(-50%, -10%) rotate(330deg);"></div>
+                        <div class="flower__white-circle"></div>
+
+                        <!-- Efectos de luz -->
+                        <div class="flower__light flower__light--1"></div>
+                        <div class="flower__light flower__light--2"></div>
+                        <div class="flower__light flower__light--3"></div>
+                        <div class="flower__light flower__light--4"></div>
+                        <div class="flower__light flower__light--5"></div>
+                        <div class="flower__light flower__light--6"></div>
+                        <div class="flower__light flower__light--7"></div>
+                        <div class="flower__light flower__light--8"></div>
+                    </div>
+                    <div class="flower__line">
+                        <div class="flower__line__leaf flower__line__leaf--1"></div>
+                        <div class="flower__line__leaf flower__line__leaf--2"></div>
+                        <div class="flower__line__leaf flower__line__leaf--3"></div>
+                        <div class="flower__line__leaf flower__line__leaf--4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="shooting-stars">
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+    </div>
+
+    <!-- 🎵 Audio con la música -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="/assets/MUSICA/FELIZ-CUMPLEAÑOS.wav" type="audio/wav">
+        <source src="/assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- Botón de música mejorado -->
+    <button id="music-toggle" class="music-btn">🔇</button>
+    <div class="music-indicator" id="music-indicator">Música: OFF</div>
+
+    <script>
+        // Elementos de música
+        const music = document.getElementById("bg-music");
+        const toggleBtn = document.getElementById("music-toggle");
+        const musicIndicator = document.getElementById("music-indicator");
+        
+        // Configuración de música
+        music.volume = 0.7; // Volumen al 70%
+
+        // Función para mostrar indicador temporal
+        function showIndicator(text) {
+            musicIndicator.textContent = text;
+            musicIndicator.classList.add('show');
+            setTimeout(() => {
+                musicIndicator.classList.remove('show');
+            }, 2000);
+        }
+
+        // Control de música
+        toggleBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            
+            if (music.paused) {
+                // Intentar reproducir música
+                const playPromise = music.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // Éxito al reproducir
+                        toggleBtn.textContent = "🎵";
+                        toggleBtn.classList.add('playing');
+                        showIndicator('Música: ON 🔊');
+                    }).catch(error => {
+                        // Error al reproducir
+                        console.log("Error al reproducir música:", error);
+                        showIndicator('Error: Click en la página primero');
+                    });
+                }
+            } else {
+                // Pausar música
+                music.pause();
+                toggleBtn.textContent = "🔇";
+                toggleBtn.classList.remove('playing');
+                showIndicator('Música: OFF');
+            }
+        });
+
+        // Reproducir automáticamente después de la interacción del usuario
+        document.addEventListener('click', function() {
+            if (music.paused) {
+                // Solo intentar reproducir si no está ya reproduciendo
+                const playPromise = music.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        toggleBtn.textContent = "🎵";
+                        toggleBtn.classList.add('playing');
+                        showIndicator('Música activada! 🎵');
+                    }).catch(error => {
+                        console.log("Reproducción automática bloqueada:", error);
+                    });
+                }
+            }
+        }, { once: true }); // Solo una vez
+
+        // Cargar animaciones
+        onload = () => {
+            const c = setTimeout(() => {
+                document.body.classList.remove("not-loaded");
+                
+                function createShootingStar() {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    star.style.top = Math.random() * 60 + '%';
+                    star.style.animationDelay = '0s';
+                    star.style.animationDuration = (Math.random() * 1.5 + 2) + 's';
+                    
+                    document.querySelector('.shooting-stars').appendChild(star);
+                    
+                    setTimeout(() => {
+                        star.remove();
+                    }, 4000);
+                }
+                
+                setInterval(() => {
+                    if (Math.random() > 0.3) { 
+                        createShootingStar();
+                    }
+                }, Math.random() * 5000 + 3000);
+                clearTimeout(c);
+            }, 1000);
+        };
+
+        // Manejar errores de audio
+        music.addEventListener('error', function(e) {
+            console.error('Error de audio:', e);
+            showIndicator('Error: Archivo de audio no encontrado');
+            
+            // Mostrar ayuda para la ruta correcta
+            console.log('/assets/MUSICA/FELIZ-CUMPLEAÑOS.wav');
+        });
+
+        // Mostrar estado cuando la música termina de cargar
+        music.addEventListener('canplaythrough', function() {
+            console.log('Música cargada y lista para reproducir');
+        });
+    </script>
+</body>
+</html>
