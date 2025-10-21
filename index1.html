@@ -26,25 +26,27 @@
             background-color: var(--dark-color);
             overflow: hidden;
             perspective: 1000px;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Georgia', 'Times New Roman', serif;
         }
 
         /* Contenedor principal con diseño dividido */
         .container {
             display: flex;
-            width: 110%;
+            width: 100%;
             height: 100vh;
         }
 
-        /* Panel izquierdo para el texto */
+        /* Panel izquierdo para el texto - CORREGIDO */
         .text-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            padding: 5%;
+            padding: 2% 5%;
             z-index: 10;
             position: relative;
+            overflow-y: auto;
+            max-height: 100vh;
+            justify-content: flex-start; /* Aseguramos que empiece desde arriba */
         }
 
         /* Panel derecho para las flores */
@@ -95,6 +97,7 @@
                     transparent 22px
                 ),
                 linear-gradient(90deg, rgb(0, 255, 250), rgb(240, 240, 240));
+            z-index: -1;
         }
 
         /* Estrellas fugaces */
@@ -475,29 +478,61 @@
         .flower__light--7 { left: 3vmin; animation-delay: 2s; }
         .flower__light--8 { left: -6vmin; animation-delay: 3.5s; }
 
-        /* Texto especial */
+        /* Texto especial - COMPLETAMENTE VISIBLE Y UNIFORME */
         .special-text {
             color: #fff;
-            font-family: 'Arial', sans-serif;
-            font-size: 2.5vmin;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-size: 2.2vmin;
             text-shadow: 0 0 1vmin rgba(255, 255, 255, 0.5);
             z-index: 10;
-            opacity: 0;
-            animation: fadeIn 3s 1s forwards;
-            line-height: 1.6;
-            background: rgba(0, 0, 0, 0.6);
+            opacity: 1; /* Cambiado a visible desde el inicio */
+            line-height: 1.8;
+            background: rgba(0, 0, 0, 0.4);
             padding: 4vmin;
             border-radius: 2vmin;
-            box-shadow: 0 0 2vmin rgba(255, 100, 0, 0.5);
-            max-width: 90%;
+            box-shadow: 0 0 2vmin rgba(255, 100, 0, 0.3);
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+            text-align: justify;
+            margin-top: 0; /* Aseguramos que empiece desde arriba */
         }
 
         .special-text strong {
             display: block;
-            margin-bottom: 2vmin;
-            font-size: 3.5vmin;
+            margin-bottom: 3vmin;
+            font-size: 4vmin;
             color: #ffa500;
             text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.7);
+        }
+
+        .special-text p {
+            margin-bottom: 2.5vmin;
+            text-indent: 3vmin;
+            position: relative;
+            transition: all 0.3s ease;
+            color: #ffffff; /* Color uniforme para todo el texto */
+        }
+
+        .special-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ELIMINADO: Estilo especial para primera letra */
+        /* .special-text p::first-letter {
+            font-size: 1em;  Tamaño normal 
+            color: #ffffff;  Mismo color que el resto 
+            font-weight: normal;  Sin negrita 
+        } */
+
+        .special-text p:hover {
+            color: #ffd700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
         }
 
         /* Botón de música mejorado */
@@ -553,6 +588,25 @@
 
         .music-indicator.show {
             opacity: 1;
+        }
+
+        /* Scrollbar personalizado para el panel de texto */
+        .text-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .text-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .text-panel::-webkit-scrollbar-thumb {
+            background: #ffa500;
+            border-radius: 10px;
+        }
+
+        .text-panel::-webkit-scrollbar-thumb:hover {
+            background: #ff7b00;
         }
 
         /* Animaciones clave */
@@ -688,19 +742,25 @@
             }
             
             .text-panel {
-                padding: 10% 5%;
+                padding: 5% 5%;
+                max-height: 50vh;
             }
             
             .special-text {
                 font-size: 3vmin;
+                padding: 3vmin;
             }
             
             .special-text strong {
-                font-size: 4vmin;
+                font-size: 5vmin;
             }
             
             .flowers {
                 transform: scale(0.5);
+            }
+            
+            .flowers-panel {
+                max-height: 50vh;
             }
         }
     </style>
@@ -710,15 +770,24 @@
     <div class="night"></div>
     
     <div class="container">
-        <!-- Panel izquierdo para el texto -->
+        <!-- Panel izquierdo para el texto - CORREGIDO -->
         <div class="text-panel">
             <div class="special-text">
-                <strong>FELIZ CUMPLEAÑOS, HERMANITO</strong>
-                <p>ESPERO QUE HOY TENGAS UN DÍA MARAVILLOSO LLENO DE ALEGRÍAS Y MOMENTOS BONITOS.</p>
-                <p>ME SIENTO MUY ORGULLOSO DE TI Y DE TODO LO QUE HAS LOGRADO CON TU ESFUERZO Y DEDICACIÓN.</p>
-                <p>ERES UNA PERSONA INCREÍBLE Y UN EJEMPLO PARA TODOS LOS QUE TE QUEREMOS.</p>
-                <p>DESEO QUE ESTE NUEVO AÑO TE TRAIGA MUCHA PAZ, SALUD Y COSAS BUENAS.</p>
-                <p>TE QUIERO MUCHO, Y SIEMPRE PODRÁS CONTAR CONMIGO.</p>
+                <h2><p><strong>FELIZ CUMPLEAÑOS</strong></p></h2>
+
+                <p>Hoy levanto mis palabras hasta donde estés, para recordarte cuánto te quiero y cuánto te admiro. La distancia podrá ser grande, pero el amor de un hermano no conoce fronteras.</p>
+
+                <p>Desde niños compartimos risas, juegos y sueños que el tiempo nunca podrá borrar. Crecimos juntos, y aunque hoy caminemos por rutas diferentes, sigo sintiendo tu fuerza y tu ejemplo en cada paso que doy.</p>
+
+                <p>Me siento profundamente orgulloso de ti —de tu valentía, de tu esfuerzo y de todo lo que has logrado con tanto corazón. Eres y siempre serás mi hermano, mi guía y mi motivo para sonreír en los días grises.</p>
+
+                <p>Brindo por ti, por tu vida, por las metas cumplidas y las que están por venir. Que cada amanecer te encuentre lleno de fe, salud y esperanza. Que el destino te regale calma en los días duros y alegría en los buenos momentos.</p>
+
+                <p>Y cuando la vida nos vuelva a reunir, ese abrazo pendiente será el más sincero del mundo, cargado de todo lo que las palabras no pueden decir.</p>
+
+                <p><strong>Feliz cumpleaños, hermanito.</strong>   
+                Aunque estés lejos, te llevo en mi corazón, donde siempre has estado y siempre estarás.</p>
+
             </div>
         </div>
         
