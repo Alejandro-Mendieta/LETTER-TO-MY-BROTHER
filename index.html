@@ -370,13 +370,15 @@
                 ¡TE QUIERO MUCHO!
               </span>
             </p>
-            <img src="/assets/FOTO/Ftosecond.png" alt="Foto de Nico" class="custom-image">
+            <!-- RUTA CORREGIDA -->
+            <img src="assets/FOTO/Ftosecond.png" alt="Foto de Nico" class="custom-image" onerror="this.style.display='none'">
             <p style="font-style: italic; margin-top: 10px; color: #000000;">
               "LOS HERMANOS SON COMO LAS ESTRELLAS, PUEDES NO VERLOS SIEMPRE, PERO SABES QUE SIEMPRE ESTÁN AHI"
             </p>
 
             <a href="index1.html" target="_blank"> 
-              <img src="/assets/FOTO/Ftonico.png" alt="Foto de Nico" class="custom-image2">
+              <!-- RUTA CORREGIDA -->
+              <img src="assets/FOTO/Ftonico.png" alt="Foto de Nico" class="custom-image2" onerror="this.style.display='none'">
             </a>
           </div>
         </div>
@@ -392,13 +394,15 @@
     <button id="toggleMusic" class="letter-button" style="margin-left: 10px;">
       🎵 MÚSICA
     </button>
-  </div>
+
+  
 
   <!-- Video que aparece al abrir la carta -->
   <div class="video-container">
     <button class="close-btn" id="closeVideo">×</button>
-    <video class="appearing-video" id="appearingVideo" controls>
-      <source src="/assets/FOTO/video.mp4" type="video/mp4">
+    <!-- RUTA CORREGIDA -->
+    <video class="appearing-video" id="appearingVideo" controls onerror="console.log('Error cargando video')">
+      <source src="assets/FOTO/video.mp4" type="video/mp4">
       Tu navegador no soporta el elemento de video.
     </video>
   </div>
@@ -409,9 +413,10 @@
   <!-- Área para corazones flotantes -->
   <div class="hearts" id="hearts"></div>
 
-  <!-- Audio -->
-  <audio id="bg-music" loop>
-    <source src="/assets/MUSICA/Como-Los-Quiero.wav" type="audio/mpeg">
+  <!-- Audio - RUTA CORREGIDA -->
+  <audio id="bg-music" loop onerror="console.log('Error cargando audio')">
+    <source src="assets/MUSICA/FELIZ-CUMPLEAÑOS.wav" type="audio/wav">
+    <source src="assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
 
@@ -425,6 +430,29 @@
     const toggleMusicBtn = document.getElementById("toggleMusic");
     const heartsContainer = document.getElementById("hearts");
     let musicPlaying = false;
+
+    // Verificar si los archivos existen
+    function checkFiles() {
+      const filesToCheck = [
+        'assets/FOTO/Ftosecond.png',
+        'assets/FOTO/Ftonico.png', 
+        'assets/FOTO/video.mp4',
+        'assets/MUSICA/FELIZ-CUMPLEAÑOS.wav',
+        'assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3'
+      ];
+
+      filesToCheck.forEach(file => {
+        fetch(file, { method: 'HEAD' })
+          .then(response => {
+            if (!response.ok) {
+              console.warn(`Archivo no encontrado: ${file}`);
+            }
+          })
+          .catch(error => {
+            console.warn(`Error verificando: ${file}`, error);
+          });
+      });
+    }
 
     // Abrir/cerrar carta
     envelope.addEventListener("click", () => {
@@ -463,6 +491,7 @@
       } else {
         music.play().catch(err => {
           console.log("El navegador bloqueó la reproducción automática:", err);
+          alert("Haz click en cualquier parte de la página para activar la música");
         });
         toggleMusicBtn.textContent = "🔇 SILENCIAR";
       }
@@ -524,6 +553,17 @@
     // Crear algunos corazones al cargar la página
     window.addEventListener('load', () => {
       createHearts(3);
+      checkFiles(); // Verificar archivos al cargar
+    });
+
+    // Permitir reproducción con click en cualquier parte
+    document.addEventListener('click', function() {
+      if (music.paused && !musicPlaying) {
+        music.play().then(() => {
+          musicPlaying = true;
+          toggleMusicBtn.textContent = "🔇 SILENCIAR";
+        }).catch(e => console.log("Audio bloqueado"));
+      }
     });
   </script>
 </body>

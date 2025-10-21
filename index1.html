@@ -523,13 +523,6 @@
             margin-bottom: 0;
         }
 
-        /* ELIMINADO: Estilo especial para primera letra */
-        /* .special-text p::first-letter {
-            font-size: 1em;  Tamaño normal 
-            color: #ffffff;  Mismo color que el resto 
-            font-weight: normal;  Sin negrita 
-        } */
-
         .special-text p:hover {
             color: #ffd700;
             text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
@@ -983,10 +976,10 @@
         <div class="shooting-star"></div>
     </div>
 
-    <!-- 🎵 Audio con la música -->
+    <!-- 🎵 Audio con la música - RUTAS CORREGIDAS -->
     <audio id="bg-music" loop preload="auto">
-        <source src="/assets/MUSICA/FELIZ-CUMPLEAÑOS.wav" type="audio/wav">
-        <source src="/assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3" type="audio/mpeg">
+        <source src="assets/MUSICA/FELIZ-CUMPLEAÑOS.wav" type="audio/wav">
+        <source src="assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3" type="audio/mpeg">
         Tu navegador no soporta el elemento de audio.
     </audio>
 
@@ -1002,6 +995,28 @@
         
         // Configuración de música
         music.volume = 0.7; // Volumen al 70%
+
+        // Función para verificar si los archivos existen
+        function checkFiles() {
+            const filesToCheck = [
+                'assets/MUSICA/FELIZ-CUMPLEAÑOS.wav',
+                'assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3'
+            ];
+
+            filesToCheck.forEach(file => {
+                fetch(file, { method: 'HEAD' })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.warn(`Archivo no encontrado: ${file}`);
+                        } else {
+                            console.log(`Archivo encontrado: ${file}`);
+                        }
+                    })
+                    .catch(error => {
+                        console.warn(`Error verificando: ${file}`, error);
+                    });
+            });
+        }
 
         // Función para mostrar indicador temporal
         function showIndicator(text) {
@@ -1029,7 +1044,7 @@
                     }).catch(error => {
                         // Error al reproducir
                         console.log("Error al reproducir música:", error);
-                        showIndicator('Error: Click en la página primero');
+                        showIndicator('Haz click en la página primero');
                     });
                 }
             } else {
@@ -1041,14 +1056,13 @@
             }
         });
 
-        // Reproducir automáticamente después de la interacción del usuario
+        // Permitir reproducción con click en cualquier parte
         document.addEventListener('click', function() {
             if (music.paused) {
-                // Solo intentar reproducir si no está ya reproduciendo
                 const playPromise = music.play();
-                
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
+                        musicPlaying = true;
                         toggleBtn.textContent = "🎵";
                         toggleBtn.classList.add('playing');
                         showIndicator('Música activada! 🎵');
@@ -1057,10 +1071,10 @@
                     });
                 }
             }
-        }, { once: true }); // Solo una vez
+        });
 
         // Cargar animaciones
-        onload = () => {
+        window.addEventListener('load', () => {
             const c = setTimeout(() => {
                 document.body.classList.remove("not-loaded");
                 
@@ -1084,22 +1098,30 @@
                     }
                 }, Math.random() * 5000 + 3000);
                 clearTimeout(c);
+
+                // Verificar archivos al cargar
+                checkFiles();
             }, 1000);
-        };
+        });
 
         // Manejar errores de audio
         music.addEventListener('error', function(e) {
             console.error('Error de audio:', e);
-            showIndicator('Error: Archivo de audio no encontrado');
+            showIndicator('Error: Audio no encontrado');
             
-            // Mostrar ayuda para la ruta correcta
-            console.log('/assets/MUSICA/FELIZ-CUMPLEAÑOS.wav');
+            // Sugerir rutas alternativas
+            console.log('Verifica que los archivos estén en:');
+            console.log('- assets/MUSICA/FELIZ-CUMPLEAÑOS.wav');
+            console.log('- assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3');
         });
 
         // Mostrar estado cuando la música termina de cargar
         music.addEventListener('canplaythrough', function() {
             console.log('Música cargada y lista para reproducir');
         });
+
+        // Variable para controlar estado de música
+        let musicPlaying = false;
     </script>
 </body>
 </html>
