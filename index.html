@@ -390,12 +390,15 @@
       PRESIONA AQUÍ 
     </button>
     
-    <!-- Botón para música -->
+    <!-- Botón para música - CORREGIDO -->
     <button id="toggleMusic" class="letter-button" style="margin-left: 10px;">
       🎵 MÚSICA
     </button>
 
-  
+    <div class="instructions">
+      💡 Haz click en cualquier parte de la página para activar la música
+    </div>
+  </div>
 
   <!-- Video que aparece al abrir la carta -->
   <div class="video-container">
@@ -415,8 +418,8 @@
 
   <!-- Audio - RUTA CORREGIDA -->
   <audio id="bg-music" loop onerror="console.log('Error cargando audio')">
-    <source src="assets/MUSICA/FELIZ-CUMPLEAÑOS.wav" type="audio/wav">
-    <source src="assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3" type="audio/mpeg">
+    <source src="assets/MUSICA/Como-Los-Quiero.wav" type="audio/wav">
+    <source src="assets/MUSICA/Como-Los-Quiero.mp3" type="audio/mpeg">
     Tu navegador no soporta audio.
   </audio>
 
@@ -429,7 +432,10 @@
     const closeVideoBtn = document.getElementById("closeVideo");
     const toggleMusicBtn = document.getElementById("toggleMusic");
     const heartsContainer = document.getElementById("hearts");
+    
+    // Estado de música - INICIALIZADO CORRECTAMENTE
     let musicPlaying = false;
+    let userInteracted = false;
 
     // Verificar si los archivos existen
     function checkFiles() {
@@ -437,8 +443,8 @@
         'assets/FOTO/Ftosecond.png',
         'assets/FOTO/Ftonico.png', 
         'assets/FOTO/video.mp4',
-        'assets/MUSICA/FELIZ-CUMPLEAÑOS.wav',
-        'assets/MUSICA/FELIZ-CUMPLEAÑOS.mp3'
+        'assets/MUSICA/Como-Los-Quiero.wav',
+        'assets/MUSICA/Como-Los-Quiero.mp3'
       ];
 
       filesToCheck.forEach(file => {
@@ -446,6 +452,8 @@
           .then(response => {
             if (!response.ok) {
               console.warn(`Archivo no encontrado: ${file}`);
+            } else {
+              console.log(`✓ Archivo encontrado: ${file}`);
             }
           })
           .catch(error => {
@@ -483,19 +491,67 @@
       appearingVideo.pause();
     }
 
-    // Controlar música
-    toggleMusicBtn.addEventListener("click", () => {
-      if (musicPlaying) {
-        music.pause();
-        toggleMusicBtn.textContent = "🎵 MÚSICA";
+    // CONTROL DE MÚSICA - COMPLETAMENTE CORREGIDO
+    toggleMusicBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      
+      if (!userInteracted) {
+        // Primera interacción - intentar reproducir
+        userInteracted = true;
+        const playPromise = music.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            // Éxito al reproducir
+            musicPlaying = true;
+            toggleMusicBtn.textContent = "🔇 SILENCIAR";
+            console.log("Música iniciada correctamente");
+          }).catch(error => {
+            // Error al reproducir
+            console.log("Error al reproducir música:", error);
+            musicPlaying = false;
+            toggleMusicBtn.textContent = "🎵 MÚSICA";
+            alert("Haz click en cualquier parte de la página para activar la música primero");
+          });
+        }
       } else {
-        music.play().catch(err => {
-          console.log("El navegador bloqueó la reproducción automática:", err);
-          alert("Haz click en cualquier parte de la página para activar la música");
-        });
-        toggleMusicBtn.textContent = "🔇 SILENCIAR";
+        // Usuario ya interactuó - toggle normal
+        if (musicPlaying) {
+          music.pause();
+          musicPlaying = false;
+          toggleMusicBtn.textContent = "🎵 MÚSICA";
+          console.log("Música pausada");
+        } else {
+          const playPromise = music.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              musicPlaying = true;
+              toggleMusicBtn.textContent = "🔇 SILENCIAR";
+              console.log("Música reanudada");
+            }).catch(error => {
+              console.log("Error al reanudar música:", error);
+            });
+          }
+        }
       }
-      musicPlaying = !musicPlaying;
+    });
+
+    // Permitir reproducción con click en cualquier parte
+    document.addEventListener('click', function() {
+      if (!userInteracted) {
+        userInteracted = true;
+        const playPromise = music.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            musicPlaying = true;
+            toggleMusicBtn.textContent = "🔇 SILENCIAR";
+            console.log("Música activada por click en la página");
+          }).catch(error => {
+            console.log("Audio bloqueado incluso después del click:", error);
+          });
+        }
+      }
     });
 
     // Crear corazones flotantes
@@ -554,16 +610,24 @@
     window.addEventListener('load', () => {
       createHearts(3);
       checkFiles(); // Verificar archivos al cargar
+      
+      // Configuración inicial del botón de música
+      toggleMusicBtn.textContent = "🎵 MÚSICA";
+      music.volume = 0.7;
+      
+      console.log("Página cargada - Lista para interactuar");
     });
 
-    // Permitir reproducción con click en cualquier parte
-    document.addEventListener('click', function() {
-      if (music.paused && !musicPlaying) {
-        music.play().then(() => {
-          musicPlaying = true;
-          toggleMusicBtn.textContent = "🔇 SILENCIAR";
-        }).catch(e => console.log("Audio bloqueado"));
-      }
+    // Manejar errores de audio
+    music.addEventListener('error', function(e) {
+      console.error('Error de audio:', e);
+      console.log('Verifica que el archivo de audio esté en: assets/MUSICA/Como-Los-Quiero.wav o .mp3');
+    });
+
+    // Actualizar estado cuando la música termina
+    music.addEventListener('ended', function() {
+      musicPlaying = false;
+      toggleMusicBtn.textContent = "🎵 MÚSICA";
     });
   </script>
 </body>
